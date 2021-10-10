@@ -1,0 +1,75 @@
+body {
+  display: flex;
+  flex-direction: column;
+  height: 240px;
+  padding: 0 16px;
+  width: 360px;
+}
+
+header {
+  display: flex;
+  padding: 16px 0;
+}
+
+h1 {
+  font-size: 24px;
+  margin: 0;
+  padding: 0;
+}
+
+#idsButton {
+  background: #1a73e8;
+  border: 0;
+  border-radius: 28px;
+  box-shadow: none;
+  box-sizing: border-box;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 500;
+  height: 32px;
+  letter-spacing: .25px;
+  margin-left: auto;
+  padding: 0 2em;
+  text-shadow: none;
+  text-transform: none;
+}
+
+#idsButton:disabled {
+  opacity: .5;
+}
+
+#idsButtonCount {
+  margin-left: .1em;
+  opacity: .8;
+}
+
+#ids {
+  height: 100%;
+  width: 100%;
+}
+
+#content {
+  align-items: center;
+  display: flex;
+  flex: auto;
+  margin: 0 0 16px;
+}
+
+#authError {
+  background: #f5d6d6;
+  border-radius: 16px;
+  color: #600;
+  display: none;
+  font-size: 14px;
+  padding: 16px;
+  text-align: center;
+}
+
+h2 {
+  font-size: 1.25em;
+  margin: 0 0 8px;
+}
+
+p {
+  margin: 0;
+}

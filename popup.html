@@ -1,0 +1,23 @@
+<html>
+<head>
+  <title>VRChat Friend IDs</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <header>
+    <h1>VRChat Friend IDs</h1>
+    <button id="idsButton">
+      Get IDs
+      <span id="idsButtonCount"></span>
+    </button>
+  </header>
+  <div id="content">
+    <textarea id="ids"></textarea>
+    <div id="authError">
+      <h2>Authentication Failed</h2>
+      <p>To use this extension, you need to be logged into VRChat.com first. Please do this and try again.</p>
+    </div>
+  </div>
+  <script src="popup.js"></script>
+</body>
+</html>
