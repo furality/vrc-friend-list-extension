@@ -43,16 +43,27 @@ h1 {
   opacity: .8;
 }
 
-#ids {
-  height: 100%;
-  width: 100%;
-}
-
 #content {
   align-items: center;
   display: flex;
   flex: auto;
   margin: 0 0 16px;
+  position: relative;
+}
+
+#loading {
+  background: rgba(255, 255, 255, .8);
+  bottom: 0;
+  display: none;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+#ids {
+  height: 100%;
+  width: 100%;
 }
 
 #authError {

@@ -2,6 +2,7 @@
   const authErrorEl = document.getElementById('authError');
   const buttonEl = document.getElementById('idsButton');
   const buttonCountEl = document.getElementById('idsButtonCount');
+  const loadingEl = document.getElementById('loading');
   const textareaEl = document.getElementById('ids');
   const rateLimitTimeOut = 60;
   let countdownInterval;
@@ -22,7 +23,7 @@
     textareaEl.value = data[friendsIdsKey];
 
     // Show instructions based on prior state.
-    if (data[lastErrorsKey] === 'authError') showAuthError();
+    if (data[lastErrorsKey] === 'authError') showAuthError(true);
 
     // Event listeners
     buttonEl.addEventListener('click', handleButtonEvent);
@@ -71,19 +72,32 @@
 
     // Do nothing if disabled, disable if not already.
     if (buttonEl.disabled === true) return false;
-    //else buttonEl.disabled = true;
+
+    showLoading(true);
 
     // Get the user's data object.
     const response = await fetch('https://vrchat.com/api/1/auth/user');
 
-    if (!response.status === 200) {
+    if (response.status === 200) {
       handleResponseSuccess(response);
       handleRateLimiting(getCurrentTimeInSeconds());
     } else {
       handleResponseFailure(response);
+    }
 
-      // Go to VRChat.com to login or use auth cookie for later request.
-      chrome.tabs.update({ url: 'https://vrchat.com/home/login' });
+    showLoading(false);
+  }
+
+  /**
+   * Toggles display of loading element over textarea.
+   * @param {*} show
+   */
+  function showLoading(show) {
+    if (show) {
+      textareaEl.value = '';
+      loadingEl.style.display = 'block';
+    } else {
+      loadingEl.removeAttribute('style');
     }
   }
 
