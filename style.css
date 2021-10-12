@@ -2,13 +2,17 @@ body {
   display: flex;
   flex-direction: column;
   height: 240px;
-  padding: 0 16px;
+  padding: 16px 16px 8px;
   width: 360px;
+}
+
+a {
+  color: #1a73e8;
 }
 
 header {
   display: flex;
-  padding: 16px 0;
+  padding: 0 0 16px;
 }
 
 h1 {
@@ -47,12 +51,15 @@ h1 {
   align-items: center;
   display: flex;
   flex: auto;
-  margin: 0 0 16px;
+  margin: 0;
   position: relative;
 }
 
 #loading {
-  background: rgba(255, 255, 255, .8);
+  background-color: rgba(255, 255, 255, .8);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 128px auto;
   bottom: 0;
   display: none;
   left: 0;
@@ -61,7 +68,7 @@ h1 {
   top: 0;
 }
 
-#ids {
+#idsTextarea {
   height: 100%;
   width: 100%;
 }
@@ -83,4 +90,15 @@ h2 {
 
 p {
   margin: 0;
+}
+
+footer {
+  color: #777;
+  font-size: 12px;
+  line-height: 1.25em;
+  padding: 16px 0 0;
+}
+
+#lastUpdated {
+  display: none;
 }

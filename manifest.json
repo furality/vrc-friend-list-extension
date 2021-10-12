@@ -8,6 +8,10 @@
     "default_popup": "popup.html"
   },
 
+  "icons": {
+    "128": "icon.png"
+  },
+
   "host_permissions": [
     "*://www.vrchat.com/*",
     "*://vrchat.com/*"

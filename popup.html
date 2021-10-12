@@ -12,13 +12,20 @@
     </button>
   </header>
   <div id="content">
-    <div id="loading"></div>
-    <textarea id="ids"></textarea>
+    <div id="loading" style="background-image: url('./loading.gif');"></div>
+    <textarea id="idsTextarea"></textarea>
     <div id="authError">
       <h2>Authentication Failed</h2>
       <p>To use this extension, you need to be logged into VRChat.com first. Please do this and try again.</p>
     </div>
   </div>
-  <script src="popup.js"></script>
+  <footer>
+    <div id="lastUpdated">Last retrieved on <span></span></div>
+    <div id="disclaimer">
+      All data is cached locally and never shared.
+      <a href="https://github.com/furality/vrc-friend-list-extension" target="_blank">Learn more</a>
+    </div>
+  </footer>
+  <script src="./popup.js"></script>
 </body>
 </html>

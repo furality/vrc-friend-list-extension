@@ -2,14 +2,20 @@
   const authErrorEl = document.getElementById('authError');
   const buttonEl = document.getElementById('idsButton');
   const buttonCountEl = document.getElementById('idsButtonCount');
+  const lastUpdatedEl = document.getElementById('lastUpdated');
   const loadingEl = document.getElementById('loading');
-  const textareaEl = document.getElementById('ids');
+  const textareaEl = document.getElementById('idsTextarea');
   const rateLimitTimeOut = 60;
   let countdownInterval;
 
-  const lastErrorsKey = 'lastErrors';
-  const lastPressedDateKey = 'lastPressedDate';
   const friendsIdsKey = 'pastFriendsIds';
+  const friendsIdsDateKey = 'pastFriendsIdsDate';
+  const lastErrorKey = 'lastError';
+  const lastPressedDateKey = 'lastPressedDate';
+
+  const errorValues = {
+    auth: 'authError',
+  };
 
   /**
    * Runtime logic, called at the bottom of the script.
@@ -17,55 +23,26 @@
   async function init() {
     handleRateLimiting();
 
-    data = await getData();
+    let data = await getData();
 
-    // Populate with prior friend ID data.
-    textareaEl.value = data[friendsIdsKey];
+    // Populate with prior friend IDs data.
+    textareaEl.value = data[friendsIdsKey] ? data[friendsIdsKey] : '';
+    changeLastUpdated(data[friendsIdsDateKey]);
 
     // Show instructions based on prior state.
-    if (data[lastErrorsKey] === 'authError') showAuthError(true);
+    if (data[lastErrorKey] === errorValues.auth) showAuthError(true);
 
-    // Event listeners
+    // Event listeners.
     buttonEl.addEventListener('click', handleButtonEvent);
-    // TODO on textarea change, save friend list to storage
   }
 
-  /**
-   * Display authentication error to user.
-   * @param {boolean} show Whether to show or not.
-   */
-  function showAuthError(show) {
-    if (show) {
-      textareaEl.style.display = 'none';
-      authErrorEl.style.display = 'block';
-    } else {
-      textareaEl.removeAttribute('style');
-      authErrorEl.removeAttribute('style');
-    }
-  }
-
-  /**
-   * Disable button if rate limited.
-   * This prevents unintentionally abusing VRChat's API resources.
-   * @param {Date.getTime() / 1000} lastPressedDateInSeconds
-   */
-  async function handleRateLimiting(lastPressedDateInSeconds = null) {
-    const currentTimeInSeconds = getCurrentTimeInSeconds();
-
-    if (lastPressedDateInSeconds)
-      saveDate(lastPressedDateInSeconds);
-    else
-      lastPressedDateInSeconds = await getSavedDate();
-
-    const secondsSinceLastPressed = currentTimeInSeconds - lastPressedDateInSeconds;
-
-    if (secondsSinceLastPressed < rateLimitTimeOut || !(currentTimeInSeconds <= 0))
-      startCountdown(lastPressedDateInSeconds + rateLimitTimeOut);
-  }
+  /*
+   * Core Functions
+   * ------------------------------------------------------------------------ */
 
   /**
    * Button onClick event for added friend IDs to textarea.
-   * @param {*} event
+   * @param {*} event Button element event object.
    */
   async function handleButtonEvent(event) {
     event.preventDefault();
@@ -78,7 +55,10 @@
     // Get the user's data object.
     const response = await fetch('https://vrchat.com/api/1/auth/user');
 
+    removePriorRetrievedData();
+
     if (response.status === 200) {
+      showAuthError(false);
       handleResponseSuccess(response);
       handleRateLimiting(getCurrentTimeInSeconds());
     } else {
@@ -89,8 +69,107 @@
   }
 
   /**
+   * Handles the successful response.
+   * @param {*} response Response object from fetch()
+   */
+  async function handleResponseSuccess(response) {
+    const friendIds = JSON.stringify({ friends: (await response.json()).friends });
+    const lastUpdatedDate = getCurrentTimeInSeconds() * 1000;
+    textareaEl.value = friendIds;
+    saveData(friendsIdsKey, friendIds);
+    changeLastUpdated(lastUpdatedDate);
+    saveData(friendsIdsDateKey, lastUpdatedDate);
+  }
+
+  /**
+   * Handles an error response, possibly from authenitcation or API ban.
+   * @param {*} response Response object from fetch()
+   */
+  function handleResponseFailure(response) {
+    switch(response.status) {
+      case 401:
+        // Not logged in, show instruction and navigate to page.
+        showAuthError(true);
+        redirectToLogin();
+        break;
+      default:
+        // Default error, try again later.
+        handleRateLimiting(getCurrentTimeInSeconds());
+    }
+  }
+
+  /**
+   * Disable button if rate limited.
+   * This prevents unintentionally abusing VRChat's API resources.
+   * @param {Date.getTime() / 1000} lastPressedDateInSeconds
+   */
+  async function handleRateLimiting(lastPressedDateInSeconds = null) {
+    const currentTimeInSeconds = getCurrentTimeInSeconds();
+
+    if (lastPressedDateInSeconds)
+      saveData(lastPressedDateKey, lastPressedDateInSeconds);
+    else
+      lastPressedDateInSeconds = await getSavedDate();
+
+    const secondsSinceLastPressed = currentTimeInSeconds - lastPressedDateInSeconds;
+
+    if (secondsSinceLastPressed < rateLimitTimeOut || !(currentTimeInSeconds <= 0))
+      startCountdown(lastPressedDateInSeconds + rateLimitTimeOut);
+  }
+
+  /**
+   * Redirect to VRChat.com's login page.
+   */
+  function redirectToLogin() {
+    chrome.tabs.update({ url: 'https://vrchat.com/home/login' });
+  }
+
+  /*
+   * UX Functions
+   * ------------------------------------------------------------------------ */
+
+  /**
+   * Display authentication error to user.
+   * @param {boolean} show Whether to show or not.
+   */
+  function showAuthError(show) {
+    if (show) {
+      textareaEl.style.display = 'none';
+      authErrorEl.style.display = 'block';
+      saveData(lastErrorKey, errorValues.auth);
+    } else {
+      textareaEl.removeAttribute('style');
+      authErrorEl.removeAttribute('style');
+      saveData(lastErrorKey, null);
+    }
+  }
+
+  /**
+   * Handles displaying the "Last retrieved on" data.
+   * @param {*} date
+   */
+  function changeLastUpdated(date) {
+    const lastUpdatedDateEl = lastUpdatedEl.getElementsByTagName('span')[0];
+    const dateOptions = {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+    };
+    if (!date) {
+      lastUpdatedEl.style.display = 'none';
+    } else {
+      lastUpdatedEl.style.display = 'block';
+      lastUpdatedDateEl.innerHTML =
+          new Date(date).toLocaleDateString(undefined, dateOptions);
+    }
+  }
+
+  /**
    * Toggles display of loading element over textarea.
-   * @param {*} show
+   * @param {boolean} show Whether or not to show the loading indicator.
    */
   function showLoading(show) {
     if (show) {
@@ -102,54 +181,21 @@
   }
 
   /**
-   * Handles the successful response.
-   * @param {*} response
-   */
-  async function handleResponseSuccess(response) {
-    const friendIds = JSON.stringify({ friends: (await response.json()).friends });
-    saveData(friendsIdsKey, friendIds);
-    textareaEl.value = friendIds;
-  }
-
-  /**
-   * Handles an error response, possibly from authenitcation or API ban.
-   * @param {*} response
-   */
-  function handleResponseFailure(response) {
-    switch(response.status) {
-      case 401:
-        // Not logged in, show instruction and navigate to page.
-        setTimeout(() => redirectToLogin(), 3000);
-        break;
-      default:
-        // Default error, try again later.
-        handleRateLimiting(getCurrentTimeInSeconds());
-    }
-  }
-
-  /**
-   * Redirect to VRChat.com's login page.
-   */
-  function redirectToLogin() {
-    chrome.tabs.update({ url: 'https://vrchat.com/home/login' });
-  }
-
-  /**
-   * Starts the disabled button countdown animation.
+   * Creates the interval for the button countdown state.
    * @param {*} futureDateInSeconds
    */
   function startCountdown(futureDateInSeconds) {
-    handleButtonCountdown(futureDateInSeconds);
+    buttonCountdown(futureDateInSeconds);
     countdownInterval = setInterval(() => {
-      handleButtonCountdown(futureDateInSeconds);
+      buttonCountdown(futureDateInSeconds);
     }, 1000);
   }
 
   /**
-   * Handles the disable state of the button.
+   * Handles the disabled countdown display of the button.
    * @param {*} countdown number of seconds to show in button.
    */
-  function handleButtonCountdown(futureDateInSeconds = 0) {
+  function buttonCountdown(futureDateInSeconds = 0) {
     const countdown =
         Math.ceil(futureDateInSeconds - getCurrentTimeInSeconds());
     if (countdown > 0) {
@@ -163,6 +209,10 @@
     }
   }
 
+  /*
+   * Helper Functions
+   * ------------------------------------------------------------------------ */
+
   /**
    * Gets the last pressed date from Chrome storage.
    * @returns {Promise<int>} The date in seconds.
@@ -171,20 +221,12 @@
     const dateInStorage = (await getData())[lastPressedDateKey];
     if (dateInStorage) return dateInStorage;
     const currentTime = getCurrentTimeInSeconds();
-    saveDate(currentTime);
+    saveData(lastPressedDateKey, currentTime);
     return currentTime;
   }
 
   /**
-   * Saves the last pressed date in Chrome storage.
-   * @param {int} newDateInSeconds New date to add in seconds.
-   */
-  function saveDate(newDateInSeconds) {
-    saveData(lastPressedDateKey, newDateInSeconds);
-  }
-
-  /**
-   * Helper for accessing the Chrome sync storage.
+   * Retrieves all data from the Chrome local storage.
    */
   async function getData() {
     return new Promise((resolve) => {
@@ -195,10 +237,20 @@
   }
 
   /**
-   * Helper for saving data into the Chrome sync storage.
+   * Saves data into the Chrome local storage.
+   * @param {string} key The data key to lookup/create.
+   * @param {*} value The new data payload to store.
    */
   function saveData(key, value) {
     chrome.storage.local.set({[key]: value});
+  }
+
+  /**
+   * Removes data retrieved from API (and related data) from storage.
+   */
+  function removePriorRetrievedData() {
+    chrome.storage.local.remove(
+        [ lastErrorKey, friendsIdsKey, friendsIdsDateKey ]);
   }
 
   /**
@@ -207,6 +259,10 @@
   function getCurrentTimeInSeconds() {
     return new Date().getTime() / 1000;
   }
+
+  /*
+   * Run the app.
+   * ------------------------------------------------------------------------ */
 
   init();
 })();
