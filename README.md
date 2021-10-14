@@ -1,8 +1,8 @@
-# VRChat Friends ID Extension
+# VRChat Friend IDs List Extension
 A simple Google Chrome extension that makes a call to VRChat.com's public API using the user's already authenticated session and displays a JSON object of the user's VRChat friend list IDs; As provided by the API's response. If the user isn't already authenticated with VRChat.com, the extension will redirect them to the login page where they can then make another "Get IDs" request after successfully logging in.
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/furality/vrc-friend-list-extension/master/screenshot.png" alt="Screenshot of the extension" width="">
+  <img src="https://github.com/furality/vrc-friend-list-extension/blob/master/screenshot.png?raw=true" alt="Screenshot of the extension" width="500px" style="max-width: 100%">
 </p>
 
 # Privacy is important!
@@ -16,10 +16,10 @@ A simple Google Chrome extension that makes a call to VRChat.com's public API us
 
 Since the extension state is reloaded on every opening, storing certain data helps improve UX. As a reminder, all data is saved locally and never sent/shared with any 3rd party.
 
-* **pastFriendsIds** - An array of VRChat friend IDs as retrieved from API, formatted to a JSON object. To prevent a blank textarea on the reopenning of the extension especially if the user closes it on error or tab navigation does.
-* **pastFriendsIdsDate** - Date timestamp since the last successful API response, to display to the user via "Last retrieved on" text in the footer. Helps the user know how old the data is.
-* **lastError** - A string identifier for the last error received from a failed response. For example, used for toggling the authentication error visual.
-* **lastPressedDate** - Date timestamp since the last time the "Get IDs" button was pressed. This is to rate limit requests to prevent API abuse from user error. Used on the UI to calculate and show the animated button countdown.
+* **pastFriendsIds** - An array of VRChat friend IDs as retrieved from API, formatted to a new JSON object. This is stored so that there's no blank textarea after a retrieval from the pop up closing due to navigation or user error.
+* **pastFriendsIdsDate** - Date timestamp since the last successful API response, to display to the user via "Last retrieved on" text in the footer. Helps communicate how fresh the saved friend IDs data is.
+* **lastError** - A string identifier for the last error received from a failed response. For example, it's used for toggling the authentication error visual.
+* **lastPressedDate** - Date timestamp since the last time the "Get IDs" button was pressed. This is to rate limit requests that prevents API abuse from user error. Used on the UI to calculate and show the animated button countdown.
 
 # Development
 
