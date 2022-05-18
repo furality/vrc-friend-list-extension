@@ -2,22 +2,24 @@
   "name": "VRChat Friend IDs",
   "description": "Grabs a list of friend IDs from the VRChat API.",
   "version": "1.0",
-  "manifest_version": 3,
+  "manifest_version": 2,
 
-  "action": {
+  "browser_action": {
     "default_popup": "popup.html"
   },
 
   "icons": {
     "128": "icon.png"
   },
-
-  "host_permissions": [
-    "*://www.vrchat.com/*",
-    "*://vrchat.com/*"
-  ],
-
-  "permissions": [
-    "storage"
-  ]
+  "developer": {
+    "name": "Furality",
+    "url": "https://www.furality.org"
+  },
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "help@furality.org",
+      "strict_min_version": "42.0"
+    }
+  },
+  "permissions": ["storage", "*://www.vrchat.com/*", "*://vrchat.com/*"]
 }
