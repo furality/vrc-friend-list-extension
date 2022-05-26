@@ -106,10 +106,18 @@
   async function handleRateLimiting(lastPressedDateInSeconds = null) {
     const currentTimeInSeconds = getCurrentTimeInSeconds();
 
-    if (lastPressedDateInSeconds)
+    if (lastPressedDateInSeconds) {
       saveData(lastPressedDateKey, lastPressedDateInSeconds);
-    else
+    } else {
       lastPressedDateInSeconds = await getSavedDate();
+    }
+    
+
+    // If there's no saved data, that means the user is opening the extension for the first time ever.
+    // In this case, don't rate limit this first request for friend IDs.
+    if (lastPressedDateInSeconds === null) {
+      return;
+    }
 
     const secondsSinceLastPressed = currentTimeInSeconds - lastPressedDateInSeconds;
 
@@ -215,14 +223,16 @@
 
   /**
    * Gets the last pressed date from Chrome storage.
-   * @returns {Promise<int>} The date in seconds.
+   *
+   * @returns {Promise<number | null>} 
+   * Returns the date in seconds of the last time the friend IDs were fetched.
+   * Returns null if no date saved in storage (ie.e the extension has not be used yet).
    */
   async function getSavedDate() {
     const dateInStorage = (await getData())[lastPressedDateKey];
     if (dateInStorage) return dateInStorage;
-    const currentTime = getCurrentTimeInSeconds();
-    saveData(lastPressedDateKey, currentTime);
-    return currentTime;
+
+    return null;
   }
 
   /**
