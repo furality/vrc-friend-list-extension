@@ -18,7 +18,7 @@
   "browser_specific_settings": {
     "gecko": {
       "id": "help@furality.org",
-      "strict_min_version": "42.0"
+      "strict_min_version": "57.0"
     }
   },
   "permissions": ["storage", "*://www.vrchat.com/*", "*://vrchat.com/*"]
