@@ -170,7 +170,7 @@
       lastUpdatedEl.style.display = 'none';
     } else {
       lastUpdatedEl.style.display = 'block';
-      lastUpdatedDateEl.innerHTML =
+      lastUpdatedDateEl.textContent =
           new Date(date).toLocaleDateString(undefined, dateOptions);
     }
   }
@@ -208,7 +208,7 @@
         Math.ceil(futureDateInSeconds - getCurrentTimeInSeconds());
     if (countdown > 0) {
       buttonEl.disabled = true;
-      buttonCountEl.innerHTML = `(${countdown})`;
+      buttonCountEl.textContent = `(${countdown})`;
       buttonCountEl.style.display = 'inline-block';
     } else {
       buttonEl.disabled = false;
