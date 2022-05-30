@@ -1,7 +1,7 @@
 {
   "name": "VRChat Friend IDs",
   "description": "Grabs a list of friend IDs from the VRChat API.",
-  "version": "1.0",
+  "version": "1.1",
   "manifest_version": 3,
 
   "action": {
