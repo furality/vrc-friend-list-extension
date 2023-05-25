@@ -3,11 +3,11 @@
 }
 
 body {
-  background: #142f52;
-  background-image: url('./bg-aqua.jpg');
+  background: #617ab1;
+  background-image: url("./bg.jpg");
   background-size: cover;
-  background-blend-mode: color-dodge;
-  background-position: right 101vh;
+  background-blend-mode: multiply;
+  background-position: right center;
   color: #fff;
   display: flex;
   flex-direction: column;
@@ -42,13 +42,13 @@ h1 {
   font-size: 12px;
   font-weight: 500;
   height: 32px;
-  letter-spacing: .25px;
+  letter-spacing: 0.25px;
   margin-left: auto;
   margin-top: -2px;
   padding: 0 2em;
   text-shadow: none;
   text-transform: none;
-  transition: all .1s linear;
+  transition: all 0.1s linear;
 }
 
 #idsButton:hover {
@@ -57,7 +57,7 @@ h1 {
 }
 
 #idsButton:disabled {
-  opacity: .5;
+  opacity: 0.5;
 }
 
 #idsButton:disabled:hover {
@@ -65,8 +65,8 @@ h1 {
 }
 
 #idsButtonCount {
-  margin-left: .1em;
-  opacity: .8;
+  margin-left: 0.1em;
+  opacity: 0.8;
 }
 
 #content {
@@ -96,7 +96,7 @@ h1 {
   border-radius: 10px;
   color: #fff;
   height: 100%;
-  padding: .4em .8em;
+  padding: 0.4em 0.8em;
   width: 100%;
 }
 
