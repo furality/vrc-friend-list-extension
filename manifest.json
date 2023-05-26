@@ -1,7 +1,7 @@
 {
   "name": "VRChat Friend IDs",
   "description": "Grabs a list of friend IDs from the VRChat API.",
-  "version": "1.1",
+  "version": "1.1.1",
   "manifest_version": 3,
 
   "action": {
@@ -12,12 +12,7 @@
     "128": "icon.png"
   },
 
-  "host_permissions": [
-    "*://www.vrchat.com/*",
-    "*://vrchat.com/*"
-  ],
+  "host_permissions": ["*://www.vrchat.com/*", "*://vrchat.com/*"],
 
-  "permissions": [
-    "storage"
-  ]
+  "permissions": ["storage"]
 }
