@@ -1,5 +1,5 @@
 # VRChat Friend IDs List Extension
-A simple Google Chrome extension that makes a call to VRChat.com's public API using the user's already authenticated session and displays a JSON object of the user's VRChat friend list IDs; As provided by the API's response. If the user isn't already authenticated with VRChat.com, the extension will redirect them to the login page where they can then make another "Get IDs" request after successfully logging in.
+A simple Firefox extension that makes a call to VRChat.com's public API using the user's already authenticated session and displays a JSON object of the user's VRChat friend list IDs; As provided by the API's response. If the user isn't already authenticated with VRChat.com, the extension will redirect them to the login page where they can then make another "Get IDs" request after successfully logging in.
 
 <p align="center">
   <img src="https://github.com/furality/vrc-friend-list-extension/blob/master/screenshot.png?raw=true" alt="Screenshot of the extension" width="500px" style="max-width: 100%">
