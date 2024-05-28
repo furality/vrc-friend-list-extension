@@ -3,11 +3,11 @@
 }
 
 body {
-  background: #617ab1;
+  background-color: rgba(50, 20, 23, 0.6);
   background-image: url("./bg.jpg");
   background-size: cover;
   background-blend-mode: multiply;
-  background-position: right center;
+  background-position: center;
   color: #fff;
   display: flex;
   flex-direction: column;
