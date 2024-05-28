@@ -3,23 +3,13 @@
 }
 
 body {
-  background-color: rgba(50, 20, 23, 0.6);
-  background-image: url("./bg.jpg");
-  background-size: cover;
-  background-blend-mode: multiply;
-  background-position: center;
+  background-color: #193659;
   color: #fff;
   display: flex;
   flex-direction: column;
-  height: 240px;
+  height: 120px;
   padding: 16px 16px 8px;
   width: 360px;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
-    Arial, sans-serif;
-}
-
-a {
-  color: #00b8d9;
 }
 
 header {
@@ -33,83 +23,13 @@ h1 {
   padding: 0;
 }
 
-#idsButton {
-  background-color: var(--buttonColor);
-  border: 0;
-  border-radius: 28px;
-  border-color: #306eff;
-  box-shadow: inset 0 1px 0 rgb(18 38 63 / 15%);
-  box-sizing: border-box;
-  color: #fff;
-  font-size: 12px;
-  font-weight: 500;
-  height: 32px;
-  letter-spacing: 0.25px;
-  margin-left: auto;
-  margin-top: -2px;
-  padding: 0 2em;
-  text-shadow: none;
-  text-transform: none;
-  transition: all 0.1s linear;
-}
-
-#idsButton:hover {
-  background: #0a53ff;
-  border-color: #004bfc;
-}
-
-#idsButton:disabled {
-  opacity: 0.5;
-}
-
-#idsButton:disabled:hover {
-  background-color: var(--buttonColor);
-}
-
-#idsButtonCount {
-  margin-left: 0.1em;
-  opacity: 0.8;
-}
-
 #content {
   align-items: center;
   display: flex;
+  flex-direction: column;
   flex: auto;
   margin: 0;
   position: relative;
-}
-
-#loading {
-  background-color: #fff;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: 128px auto;
-  bottom: 0;
-  display: none;
-  left: 0;
-  position: absolute;
-  right: 0;
-  top: 0;
-}
-
-#idsTextarea {
-  background: #335f99;
-  border: 1px solid #335f99;
-  border-radius: 10px;
-  color: #fff;
-  height: 100%;
-  padding: 0.4em 0.8em;
-  width: 100%;
-}
-
-#authError {
-  background: #f5d6d6;
-  border-radius: 8px;
-  color: #600;
-  display: none;
-  font-size: 14px;
-  padding: 16px;
-  text-align: center;
 }
 
 h2 {
@@ -119,15 +39,4 @@ h2 {
 
 p {
   margin: 0;
-}
-
-footer {
-  color: #95aac9;
-  font-size: 12px;
-  line-height: 1.25em;
-  padding: 16px 0 0;
-}
-
-#lastUpdated {
-  display: none;
 }
